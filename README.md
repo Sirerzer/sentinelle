@@ -34,6 +34,17 @@ Le script Python `main.py` fournit plusieurs fonctionnalités clés :
    - **Fonction** : `search_and_clean_jars(base_path, webhook_url, api_url, api_key)`
    - **Description** : Parcourt les fichiers JAR dans un répertoire spécifié, nettoie les fichiers non-Minecraft et prend des actions basées sur leur taille et contenu.
 
+8. **Surveillance et gestion des ressources système** :
+   - **Fonction** : `monitor_system_resources()`
+   - **Description** : Surveille l'utilisation de la RAM et des cœurs de processeur. Si l'utilisation de la RAM dépasse 99% ou si tous les cœurs de processeur sont utilisés à 99%, cette fonction tue le processus qui consomme le plus de ressources.
+
+   **Sous-fonctions** :
+   - **Fonction** : `get_top_process()`
+     - **Description** : Obtient le processus qui consomme le plus de RAM ou de CPU. Utilisé pour identifier quel processus doit être tué.
+
+   - **Fonction** : `kill_process(pid)`
+     - **Description** : Tue le processus avec l'ID de processus spécifié. Utilisé pour libérer des ressources système lorsque les seuils d'utilisation sont dépassés.
+
 ## Prérequis
 
 - **Système d'exploitation** : Linux (avec `systemd` installé)
