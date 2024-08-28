@@ -1,8 +1,3 @@
-Pour un `README.md` complet et informatif, il est utile de lister les fonctions principales du script Python `main.py` afin que les utilisateurs comprennent ce que fait le programme. Voici comment tu pourrais structurer la section des fonctionnalités dans ton fichier `README.md` :
-
-### README.md Mis à Jour
-
-```markdown
 # Sentinelle - Surveillance et Nettoyage Automatique
 
 Sentinelle est une application de surveillance qui détecte les fichiers suspects sur les serveurs et effectue des actions automatiques pour protéger le système. Ce script s'exécute au démarrage et peut suspendre des serveurs, déplacer des fichiers ou envoyer des notifications via un webhook Discord.
