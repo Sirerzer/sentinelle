@@ -11,9 +11,7 @@ SERVICE_NAME="sentinelle"
 SERVICE_FILE="/etc/systemd/system/$SERVICE_NAME.service"
 INSTALL_DIR="/etc/sentinelle"
 script_url="https://raw.githubusercontent.com/Sirerzer/sentinelle/main/main.py"
-read -p "Entrez l'URL du webhook Discord : " webhook_url
-read -p "Entrez l'URL de l'API (https://panel.exemple.com) : " api_url
-read -p "Entrez la clé API (ptla_00000000000000000000000000000000000000000000): " api_key
+
 
 mkdir -p "$INSTALL_DIR"
 
@@ -26,10 +24,7 @@ if [ ! -f "$SCRIPT_PATH" ]; then
     exit 1
 fi
 
-echo "Configuration du script avec les informations fournies..."
-sed -i "s|webhook_url = .*|webhook_url = \"$webhook_url\"|" "$SCRIPT_PATH"
-sed -i "s|api_url = .*|api_url = \"$api_url\"|" "$SCRIPT_PATH"
-sed -i "s|api_key = .*|api_key = \"$api_key\"|" "$SCRIPT_PATH"
+
 
 echo "Création du fichier de service systemd..."
 cat <<EOF | tee "$SERVICE_FILE"
@@ -55,4 +50,5 @@ systemctl start "$SERVICE_NAME.service"
 
 systemctl status "$SERVICE_NAME.service"
 
-echo "Installation terminée. Le service Sentinelle est configuré et en cours d'exécution."
+echo "Installation terminée. Le service Sentinelle est a configuré et en cours d'exécution."
+nano "$INSTALL_DIR/config.py"
