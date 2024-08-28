@@ -1,4 +1,4 @@
-from ..config import RAM_THRESHOLD , CPU_THRESHOLD
+from config import RAM_THRESHOLD , CPU_THRESHOLD
 import psutil
 from monitoring.usage import kill_process , get_top_process 
 

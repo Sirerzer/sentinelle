@@ -1,5 +1,5 @@
-from ....notifs.discord.discord import send_to_discord
-from ....config import ssh_ban_duration ,  max_ssh_attempts , ssh
+from notifs.discord.discord import send_to_discord
+from config import ssh_ban_duration ,  max_ssh_attempts , ssh
 import subprocess
 
 def monitor_ssh_failures():
@@ -8,7 +8,7 @@ def monitor_ssh_failures():
         ip_failures = {}
         with open(log_path, "r") as log_file:
             lines = log_file.readlines()
-        
+
         for line in lines:
             if "Failed password for" in line:
                 parts = line.split()

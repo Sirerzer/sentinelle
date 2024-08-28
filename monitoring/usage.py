@@ -1,5 +1,5 @@
 import psutil
-from ..config import usage_monitoring_kill , usage_monitoring 
+from config import usage_monitoring_kill , usage_monitoring 
 
 def get_top_process():
     if usage_monitoring:

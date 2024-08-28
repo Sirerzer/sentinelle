@@ -1,5 +1,5 @@
 import requests
-from ..config import pterodactyl , api_key , api_url
+from config import pterodactyl , api_key , api_url
 
 def get_server_id_from_uuid(uuid, api_url=api_url, api_key=api_key):
     if pterodactyl:

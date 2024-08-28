@@ -1,11 +1,11 @@
 import zipfile 
-from ..config import minecraft_indicators , webhook_url , api_key ,api_url ,base_path
-from ..utils.files import is_file_being_uploaded , move_large_file
+from config import minecraft_indicators , webhook_url , api_key ,api_url ,base_path
+from utils.files import is_file_being_uploaded , move_large_file
 import glob
-from ..notifs.discord.discord import send_to_discord
+from notifs.discord.discord import send_to_discord
 from discord_webhook import DiscordWebhook
 import os
-from ..pterodactyl.main import suspend_pterodactyl_server
+from pterodactyl.main import suspend_pterodactyl_server
 
 
 def is_minecraft_server_jar(jar_path):

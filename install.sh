@@ -28,7 +28,7 @@ fi
 
 # Installer les dépendances (en supposant qu'il y a un fichier requirements.txt)
 echo "Installation des dépendances Python..."
-pip3 install -r "$INSTALL_DIR/requirements.txt --break-system-packages"
+pip3 install -r "$INSTALL_DIR/requirements.txt"
 
 # Créer le fichier de service systemd
 echo "Création du fichier de service systemd..."

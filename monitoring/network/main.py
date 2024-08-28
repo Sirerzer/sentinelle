@@ -1,8 +1,8 @@
 import time
 import psutil
 import subprocess
-from ...config import threshold , threshold_monitoring , close_port , interface
-from ...notifs.discord.discord import send_to_discord
+from config import threshold , threshold_monitoring , close_port , interface
+from notifs.discord.discord import send_to_discord
 
 def monitor_bandwidth(interface=interface, threshold=threshold): 
     if threshold_monitoring:
