@@ -1,65 +1,75 @@
 # Sentinelle - Surveillance et Nettoyage Automatique
 
-Sentinelle est une application de surveillance qui détecte les fichiers suspects sur les serveurs et effectue des actions automatiques pour protéger le système. Ce script s'exécute au démarrage et peut suspendre des serveurs, déplacer des fichiers ou envoyer des notifications via un webhook Discord.
+Sentinelle est un outil de surveillance destiné à détecter et gérer les fichiers suspects sur les serveurs. Il exécute des actions automatiques pour protéger le système, telles que la suspension de serveurs, le déplacement de fichiers et l'envoi de notifications via un webhook Discord.
 
 ## Fonctionnalités
 
-Le script Python `main.py` fournit plusieurs fonctionnalités clés :
+Le script Python `main.py` offre les fonctionnalités suivantes :
 
 1. **Détection des fichiers JAR Minecraft** :
    - **Fonction** : `is_minecraft_server_jar(jar_path)`
-   - **Description** : Vérifie si un fichier JAR correspond à un serveur Minecraft en cherchant des indicateurs spécifiques dans le fichier JAR.
+   - **Description** : Identifie les fichiers JAR associés à un serveur Minecraft en recherchant des indicateurs spécifiques dans le contenu du fichier.
 
 2. **Envoi de notifications via Discord** :
    - **Fonction** : `send_to_discord(message, webhook_url)`
-   - **Description** : Envoie un message et/ou un fichier à un canal Discord via un webhook pour notifier les événements importants.
+   - **Description** : Envoie des messages et/ou des fichiers à un canal Discord via un webhook pour notifier les événements importants.
 
 3. **Détection de fichiers en cours de téléchargement** :
    - **Fonction** : `is_file_being_uploaded(file_path, wait_time=1)`
-   - **Description** : Détecte si un fichier est encore en cours de téléchargement en comparant sa taille à deux moments différents.
+   - **Description** : Détecte si un fichier est en cours de téléchargement en comparant sa taille à différents moments.
 
 4. **Déplacement des fichiers volumineux** :
    - **Fonction** : `move_large_file(file_path, destination_folder)`
-   - **Description** : Déplace un fichier vers un nouveau répertoire s'il dépasse une taille spécifique.
+   - **Description** : Déplace un fichier vers un répertoire spécifique si sa taille dépasse un seuil défini.
 
 5. **Récupération de l'ID du serveur depuis UUID** :
    - **Fonction** : `get_server_id_from_uuid(uuid, api_url, api_key)`
-   - **Description** : Récupère l'ID d'un serveur à partir de son UUID en effectuant une requête sur une API.
+   - **Description** : Obtient l'ID d'un serveur à partir de son UUID via une requête API.
 
 6. **Suspension d'un serveur via API** :
    - **Fonction** : `suspend_pterodactyl_server(server_id, api_url, api_key)`
-   - **Description** : Suspends un serveur à partir de son ID en utilisant une requête API.
+   - **Description** : Suspend un serveur en utilisant son ID via une requête API.
 
 7. **Recherche et nettoyage des fichiers JAR** :
    - **Fonction** : `search_and_clean_jars(base_path, webhook_url, api_url, api_key)`
-   - **Description** : Parcourt les fichiers JAR dans un répertoire spécifié, nettoie les fichiers non-Minecraft et prend des actions basées sur leur taille et contenu.
+   - **Description** : Explore les fichiers JAR dans un répertoire spécifié, nettoie les fichiers non-Minecraft, et prend des mesures selon leur taille et contenu.
 
-8. **Surveillance et gestion des ressources système** :
+8. **Surveillance des ressources système** :
    - **Fonction** : `monitor_system_resources()`
-   - **Description** : Surveille l'utilisation de la RAM et des cœurs de processeur. Si l'utilisation de la RAM dépasse 99% ou si tous les cœurs de processeur sont utilisés à 99%, cette fonction tue le processus qui consomme le plus de ressources.
-
+   - **Description** : Surveille l'utilisation de la RAM et du CPU. Si l'utilisation dépasse les seuils définis, le processus le plus gourmand en ressources est tué.
+   
    **Sous-fonctions** :
    - **Fonction** : `get_top_process()`
-     - **Description** : Obtient le processus qui consomme le plus de RAM ou de CPU. Utilisé pour identifier quel processus doit être tué.
-
+     - **Description** : Identifie le processus consommant le plus de RAM ou de CPU.
+   
    - **Fonction** : `kill_process(pid)`
-     - **Description** : Tue le processus avec l'ID de processus spécifié. Utilisé pour libérer des ressources système lorsque les seuils d'utilisation sont dépassés.
+     - **Description** : Termine le processus avec l'ID spécifié pour libérer des ressources système.
+
+9. **Surveillance de la bande passante** :
+   - **Fonction** : `monitor_bandwidth(interface="eth0", threshold=100000000)`
+   - **Description** : Surveille l'utilisation de la bande passante. Si elle dépasse le seuil, tous les ports sont fermés temporairement avant d'être réouverts.
+
+10. **Gestion des ports** :
+    - **Fonction** : `close_all_ports()` et `open_all_ports()`
+    - **Description** : Ferme tous les ports pour se protéger contre les attaques, puis les rouvre après une période de sécurité.
+
+11. **Surveillance des échecs de connexion SSH** :
+    - **Fonction** : `monitor_ssh_failures(log_path="/var/log/auth.log")`
+    - **Description** : Analyse les échecs de connexion SSH et bannit les IPs suspectes après un certain nombre d'échecs.
 
 ## Prérequis
 
-- **Système d'exploitation** : Linux (avec `systemd` installé)
-- **Python 3** : Assurez-vous que Python 3 est installé sur le système (`/usr/bin/python3`).
-- **Dépendances Python** : `psutil`, `requests`, `discord-webhook`. Ces paquets doivent être installés pour l'environnement Python utilisé par le script.
+- **Système d'exploitation** : Linux avec `systemd` installé.
+- **Python 3** : Assurez-vous que Python 3 est installé (`/usr/bin/python3`).
+- **Dépendances Python** : `psutil`, `requests`, `discord-webhook`. Installez-les via :
 
-Pour installer les dépendances Python, exécutez :
-
-```bash
-pip install psutil requests discord-webhook
-```
+    ```bash
+    pip install psutil requests discord-webhook
+    ```
 
 ## Installation
 
-Suivez les étapes ci-dessous pour installer Sentinelle sur votre serveur.
+Suivez ces étapes pour installer Sentinelle sur votre serveur :
 
 ### Étape 1 : Télécharger et exécuter le script d'installation
 
@@ -83,15 +93,15 @@ Suivez les étapes ci-dessous pour installer Sentinelle sur votre serveur.
 
 ### Étape 2 : Fournir les informations requises
 
-Lors de l'exécution du script, vous serez invité à entrer les informations suivantes :
+Lors de l'exécution du script, vous serez invité à entrer :
 
-- **URL du webhook Discord** : URL où les notifications seront envoyées.
-- **URL de l'API** : L'URL de l'API pour suspendre les serveurs si nécessaire.
-- **Clé API** : Clé API nécessaire pour authentifier les requêtes API.
+- **URL du webhook Discord** : URL pour envoyer les notifications.
+- **URL de l'API** : URL de l'API pour suspendre les serveurs.
+- **Clé API** : Clé pour authentifier les requêtes API.
 
 ### Étape 3 : Vérifier le service
 
-Le script configure automatiquement un service `systemd` nommé `sentinelle` pour démarrer au démarrage du système. Pour vérifier l'état du service :
+Le script configure un service `systemd` nommé `sentinelle` pour démarrer au démarrage du système. Vérifiez l'état du service avec :
 
 ```bash
 sudo systemctl status sentinelle.service
@@ -99,8 +109,8 @@ sudo systemctl status sentinelle.service
 
 ### Utilisation et Surveillance
 
-- Le service surveille automatiquement les fichiers et prend les actions définies dans le script Python.
-- Les logs du service peuvent être consultés via :
+- Le service surveille automatiquement les fichiers et exécute les actions définies dans le script.
+- Consultez les logs du service avec :
 
     ```bash
     journalctl -u sentinelle.service
@@ -109,12 +119,12 @@ sudo systemctl status sentinelle.service
 ## Dépannage
 
 - **Le service ne démarre pas ?** Vérifiez les logs avec `journalctl -u sentinelle.service`.
-- **Problème de permissions ?** Assurez-vous que le script est exécuté avec les privilèges `root`.
-- **Dépendances manquantes ?** Installez les dépendances Python manquantes avec `pip`.
+- **Problèmes de permissions ?** Assurez-vous que le script est exécuté avec les privilèges `root`.
+- **Dépendances manquantes ?** Installez les dépendances Python nécessaires avec `pip`.
 
 ## Désinstallation
 
-Pour désinstaller Sentinelle, désactivez et supprimez le service :
+Pour désinstaller Sentinelle, arrêtez et supprimez le service :
 
 ```bash
 sudo systemctl stop sentinelle.service
@@ -126,7 +136,5 @@ sudo rm -rf /etc/sentinelle
 
 ## Contribution
 
-Les contributions sont les bienvenues. Pour signaler des bugs ou proposer des fonctionnalités, ouvrez une issue sur GitHub.
-
-
+Les contributions sont les bienvenues. Pour signaler des bugs ou proposer des fonctionnalités, ouvrez une issue sur [GitHub](https://github.com/Sirerzer/sentinelle/issues).
 
