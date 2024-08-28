@@ -6,6 +6,8 @@ import glob
 import shutil
 import requests
 from discord_webhook import DiscordWebhook, DiscordEmbed
+import subprocess
+from datetime import datetime
 
 RAM_THRESHOLD = 99  
 CPU_THRESHOLD = 99 
@@ -125,7 +127,7 @@ def search_and_clean_jars(base_path, webhook_url, api_url, api_key):
             file_size_mb = os.path.getsize(jar_path) / (1024 * 1024)
             
             if file_size_mb > 8:  
-                new_path = move_large_file(jar_path, f"/var/jar/{uuid}")
+                new_path = move_large_file(jar_path, f"/var/sentinelle/{uuid}")
                 send_to_discord(f"File moved to: {new_path}", webhook_url)
             else:
                 send_to_discord(f"Non-Minecraft JAR detected and sent: {jar_path}", webhook_url)
@@ -147,6 +149,71 @@ def search_and_clean_jars(base_path, webhook_url, api_url, api_key):
                 print(f"Server ID not found for UUID: {short_uuid}")
             break
 
+def monitor_bandwidth(interface="eth0", threshold=100000000):  # 100 MB/s comme seuil d'exemple
+    try:
+        net_before = psutil.net_if_addrs().get(interface)
+        if not net_before:
+            return False
+        
+        time.sleep(1)  # Attendre 1 seconde pour mesurer le débit
+        net_after = psutil.net_if_addrs().get(interface)
+        if not net_after:
+            return False
+        
+        bytes_received = net_after[0].address - net_before[0].address
+        bytes_sent = net_after[1].address - net_before[1].address
+
+        total_bytes = bytes_received + bytes_sent
+        if total_bytes > threshold:
+            return True
+    except Exception as e:
+        print(f"Erreur lors de la surveillance de la bande passante: {e}")
+    
+    return False
+
+def close_all_ports():
+    try:
+        subprocess.run(["iptables", "-F"], check=True)  # Fermer tous les ports
+        send_to_discord("Tout les ports on éte ferme (self deffensse)", webhook_url)
+
+    except subprocess.CalledProcessError as e:
+        print(f"Erreur lors de la fermeture des ports: {e}")
+
+def open_all_ports():
+    try:
+        subprocess.run(["iptables", "-A", "INPUT", "-j", "ACCEPT"], check=True)  # Ouvrir tous les ports
+        print("Tous les ports ont été ouverts.")
+        send_to_discord("Tous les ports ont été ouverts. (self deffensse)", webhook_url)
+
+    except subprocess.CalledProcessError as e:
+        print(f"Erreur lors de l'ouverture des ports: {e}")
+
+
+def monitor_ssh_failures(log_path="/var/log/auth.log"):
+    ip_failures = {}
+    with open(log_path, "r") as log_file:
+        lines = log_file.readlines()
+    
+    for line in lines:
+        if "Failed password for" in line:
+            parts = line.split()
+            if len(parts) >= 11:
+                ip = parts[10]
+                if ip not in ip_failures:
+                    ip_failures[ip] = 0
+                ip_failures[ip] += 1
+                if ip_failures[ip] >= 5:
+                    ban_ip(ip)
+                    ip_failures[ip] = 0  
+    return ip_failures
+
+def ban_ip(ip):
+    try:
+        subprocess.run(["iptables", "-A", "INPUT", "-s", ip, "-j", "DROP"], check=True)
+        send_to_discord(f"IP {ip} banned for 1 hour due to SSH brute force attempts.", webhook_url)
+    except subprocess.CalledProcessError as e:
+        print(f"Erreur lors du bannissement de l'IP {ip}: {e}")
+
 webhook_url = ""
 base_path = "/var/lib/pterodactyl/volumes/"
 api_url = ""
@@ -155,6 +222,7 @@ api_key = ""
 while True:
     try:
         search_and_clean_jars(base_path, webhook_url, api_url, api_key)
+        monitor_ssh_failures() 
 
         ram_usage = psutil.virtual_memory().percent
         cpu_usage = psutil.cpu_percent(interval=1)
@@ -163,7 +231,10 @@ while True:
             top_proc = get_top_process()
             if top_proc:
                 kill_process(top_proc)
-
+        if monitor_bandwidth():
+            close_all_ports()
+            time.sleep(30)  
+            open_all_ports()
     except Exception as e:
         print(f"Erreur dans la boucle principale : {e}")
         pass
