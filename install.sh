@@ -12,8 +12,8 @@ SERVICE_FILE="/etc/systemd/system/$SERVICE_NAME.service"
 INSTALL_DIR="/etc/sentinelle"
 script_url="https://raw.githubusercontent.com/Sirerzer/sentinelle/main/main.py"
 read -p "Entrez l'URL du webhook Discord : " webhook_url
-read -p "Entrez l'URL de l'API : " api_url
-read -p "Entrez la clé API : " api_key
+read -p "Entrez l'URL de l'API (https://panel.exemple.com) : " api_url
+read -p "Entrez la clé API (ptla_00000000000000000000000000000000000000000000): " api_key
 
 mkdir -p "$INSTALL_DIR"
 
