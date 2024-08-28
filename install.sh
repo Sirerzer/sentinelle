@@ -6,26 +6,31 @@ if [ "$(id -u)" -ne 0 ]; then
     exit 1
 fi
 
-# Nom du fichier de service et de l'application
+# Définir les variables
 SERVICE_NAME="sentinelle"
 SERVICE_FILE="/etc/systemd/system/$SERVICE_NAME.service"
 INSTALL_DIR="/etc/sentinelle"
-script_url="https://raw.githubusercontent.com/Sirerzer/sentinelle/main/main.py"
+REPO_URL="https://github.com/Sirerzer/sentinelle.git"
 
-
+# Créer le répertoire d'installation
+echo "Création du répertoire d'installation..."
 mkdir -p "$INSTALL_DIR"
 
-SCRIPT_PATH="$INSTALL_DIR/main.py"
-echo "Téléchargement du script depuis $script_url..."
-curl -o "$SCRIPT_PATH" "$script_url"
+# Cloner le dépôt
+echo "Clonage du dépôt depuis $REPO_URL..."
+git clone "$REPO_URL" "$INSTALL_DIR"
 
-if [ ! -f "$SCRIPT_PATH" ]; then
-    echo "Erreur : le script n'a pas pu être téléchargé."
+# Vérifier si le clonage a réussi
+if [ ! -d "$INSTALL_DIR" ]; then
+    echo "Erreur : le dépôt n'a pas pu être cloné."
     exit 1
 fi
 
+# Installer les dépendances (en supposant qu'il y a un fichier requirements.txt)
+echo "Installation des dépendances Python..."
+pip3 install -r "$INSTALL_DIR/requirements.txt"
 
-
+# Créer le fichier de service systemd
 echo "Création du fichier de service systemd..."
 cat <<EOF | tee "$SERVICE_FILE"
 [Unit]
@@ -33,7 +38,7 @@ Description=Sentinelle - Surveillance et Nettoyage Automatique
 After=network.target
 
 [Service]
-ExecStart=/usr/bin/python3 $SCRIPT_PATH
+ExecStart=/usr/bin/python3 $INSTALL_DIR/main.py
 Restart=always
 User=root
 WorkingDirectory=$INSTALL_DIR
@@ -43,12 +48,17 @@ Environment="PATH=/usr/bin"
 WantedBy=multi-user.target
 EOF
 
+# Recharger la configuration de systemd et démarrer le service
 echo "Installation du service systemd..."
 systemctl daemon-reload
 systemctl enable "$SERVICE_NAME.service"
 systemctl start "$SERVICE_NAME.service"
 
+# Afficher le statut du service
 systemctl status "$SERVICE_NAME.service"
 
-echo "Installation terminée. Le service Sentinelle est a configuré et en cours d'exécution."
+# Instructions pour la configuration
+echo "Installation terminée. Le service Sentinelle est configuré et en cours d'exécution."
+echo "Vous pouvez maintenant modifier la configuration du script en éditant le fichier suivant :"
+echo "$INSTALL_DIR/config.py"
 nano "$INSTALL_DIR/config.py"
