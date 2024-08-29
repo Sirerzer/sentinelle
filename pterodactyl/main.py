@@ -1,8 +1,7 @@
 import requests
-from config import pterodactyl , api_key , api_url
-
-def get_server_id_from_uuid(uuid, api_url=api_url, api_key=api_key):
-    if pterodactyl:
+from config import pterodactyl_suspension , pterodactyl_api_url , pterodactyl_api_key
+def get_server_id_from_uuid(uuid, api_url=pterodactyl_api_url, api_key=pterodactyl_api_key):
+    if pterodactyl_suspension:
         headers = {
             "Authorization": f"Bearer {api_key}",
             "Content-Type": "application/json",
@@ -34,8 +33,8 @@ def get_server_id_from_uuid(uuid, api_url=api_url, api_key=api_key):
                 print("No server found with the specified UUID.")
                 return None
 
-def suspend_pterodactyl_server(uuid, api_url=api_url, api_key=api_key):
-    if pterodactyl:
+def suspend_pterodactyl_server(uuid, api_url=pterodactyl_api_url, api_key=pterodactyl_api_key):
+    if pterodactyl_suspension:
         server_id = suspend_pterodactyl_server(uuid=uuid , api_url=api_url, api_key=api_key)
         headers = {
             "Authorization": f"Bearer {api_key}",

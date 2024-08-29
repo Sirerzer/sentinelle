@@ -1,5 +1,5 @@
 import zipfile 
-from config import minecraft_indicators , webhook_url , api_key ,api_url ,base_path
+from config import minecraft_indicators , discord_webhook_url , pterodactyl_base_path
 from utils.files import is_file_being_uploaded , move_large_file
 import glob
 from notifs.discord.discord import send_to_discord
@@ -18,7 +18,7 @@ def is_minecraft_server_jar(jar_path):
     except:
         pass
 
-def search_and_clean_jars(base_path=base_path, api_url=api_url, api_key=api_key):
+def search_and_clean_jars(base_path=pterodactyl_base_path):
     jar_paths = glob.glob(os.path.join(base_path, '*/*.jar'))
     for jar_path in jar_paths:
         uuid = os.path.basename(os.path.dirname(jar_path))
@@ -36,12 +36,12 @@ def search_and_clean_jars(base_path=base_path, api_url=api_url, api_key=api_key)
             else:
                 send_to_discord(f"Non-Minecraft JAR detected and sent: {jar_path}")
                 with open(jar_path, "rb") as f:
-                    webhook = DiscordWebhook(url=webhook_url)
+                    webhook = DiscordWebhook(url=discord_webhook_url)
                     webhook.add_file(file=f.read(), filename=os.path.basename(jar_path))
                     webhook.execute()
                 os.remove(jar_path)
             
           
-                if suspend_pterodactyl_server(uuid, api_url, api_key):
-                    send_to_discord(f"Server {uuid} suspended due to suspicious JAR file.", webhook_url)
+                if suspend_pterodactyl_server(uuid):
+                    send_to_discord(f"Server {uuid} suspended due to suspicious JAR file.")
                 

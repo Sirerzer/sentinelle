@@ -1,10 +1,10 @@
 import time
 import psutil
 import subprocess
-from config import threshold , threshold_monitoring , close_port , interface
+from config import threshold , threshold_monitoring , close_port_on_threshold_exceed , network_interface
 from notifs.discord.discord import send_to_discord
 
-def monitor_bandwidth(interface=interface, threshold=threshold): 
+def monitor_bandwidth(interface=network_interface, threshold=threshold): 
     if threshold_monitoring:
         try:
             net_before = psutil.net_if_addrs().get(interface)
@@ -28,7 +28,7 @@ def monitor_bandwidth(interface=interface, threshold=threshold):
         return False
 
 def close_all_ports():
-    if close_port:
+    if close_port_on_threshold_exceed:
         try:
 
             subprocess.run(["iptables", "-F"], check=True)

@@ -14,8 +14,6 @@ def create_threads():
     return resource_thread, network_thread, files_thread, ssh_thread
 
 def start_threads(mode):
-    resource_thread, network_thread, files_thread, ssh_thread = create_threads()
-
     if mode in ['normal', 'turbo', 'turbo+']:
         if mode == 'normal':
             count = 1
@@ -23,8 +21,9 @@ def start_threads(mode):
             count = 3
         elif mode == 'turbo+':
             count = 5
-        
+
         for _ in range(count):
+            resource_thread, network_thread, files_thread, ssh_thread = create_threads()
             resource_thread.start()
             network_thread.start()
             files_thread.start()
@@ -34,6 +33,7 @@ def start_threads(mode):
         try:
             count = int(modes_config)
             for _ in range(count):
+                resource_thread, network_thread, files_thread, ssh_thread = create_threads()
                 resource_thread.start()
                 network_thread.start()
                 files_thread.start()

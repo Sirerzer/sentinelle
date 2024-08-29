@@ -1,15 +1,15 @@
 from notifs.discord.discord import send_to_discord
-from config import ssh_ban_duration, max_ssh_attempts, ssh
+from config import ssh_ban_duration, max_ssh_attempts, ssh_monitoring
 import subprocess
 import re
 
 def monitor_ssh_failures():
-    if ssh:
+    if ssh_monitoring:
         ip_failures = {}
         
         try:
             result = subprocess.run(
-                ["journalctl", "-u", "ssh", "--since", "1h"],  
+                ["journalctl", "-u", "ssh", "--since", "1 hour ago"],  
                 capture_output=True,
                 text=True,
                 check=True
@@ -47,7 +47,7 @@ def ban_ip(ip):
         )
         
         subprocess.run(
-            ["iptables", "-I", "INPUT", "-s", ip, "-j", "DROP", "-m", "comment", "--comment", "temporary ban", "-m", "recent", "--name", "ssh_attempts", "--set", "--seconds", str(ssh_ban_duration * 60)],
+            ["iptables", "-I", "INPUT", "-s", ip, "-j", "DROP", "-m", "comment", "recent ", "--name", "ssh_attempts", " --rcheck", "--seconds", str(ssh_ban_duration * 60)],
             check=True
         )
         
