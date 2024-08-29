@@ -65,8 +65,8 @@ Le script Python `main.py` offre les fonctionnalités suivantes :
 - **Dépendances Python** : `psutil`, `requests`, `discord-webhook`. Installez-les via :
 
     ```bash
-    pip install psutil requests discord-webhook
-    ```
+pip install psutil requests discord-webhook --break-system-packages  
+```
 
 ## Installation
 
