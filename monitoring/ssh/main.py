@@ -63,6 +63,8 @@ def ban_ip(ip):
     Args:
         ip (str): IP address to be banned.
     """
+    if ip == '::1':
+        return
     try:
         subprocess.run(
             [

@@ -120,3 +120,10 @@ mode = "normal"
 # Configuration des modes personnalisés (laisser vide si non personnalisé)
 custom_mode_config = "1"
 
+# ========================
+# UPDATE
+# ========================
+
+auto_update = True
+
+

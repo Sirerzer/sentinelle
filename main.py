@@ -4,7 +4,7 @@ from runner.monitor_network import monitor_network
 from runner.monitor_resources import monitor_resources
 from runner.monitor_files import monitor_files
 from runner.monitor_ssh import monitor_ssh
-from config import mode, custom_mode_config
+from config import mode, custom_mode_config , auto_update
 
 def create_threads():
     resource_thread = threading.Thread(target=monitor_resources, daemon=True)
@@ -47,10 +47,29 @@ def start_threads(mode):
         print(f"Mode inconnu : {mode}. Aucun thread n'a été lancé.")
 
 start_threads(mode)
+import requests
+import os
+import shutil
+import subprocess
+os.mkdir('/var/sentinelle/backupconfig')
+
+
 
 while True:
     try:
-        time.sleep(0.001)  
+        if auto_update:
+            response = requests.get("https://raw.githubusercontent.com/Sirerzer/sentinelle/main/version.txt")
+            if response.status_code == 200: 
+                version_text = response.text.strip()  
+                if version_text != "1":
+                    shutil.move("config.py" , "/var/sentinelle/backupconfig")
+                    subprocess.run(["git", "clone", 'https://github.com/Sirerzer/sentinelle.git', '/var/sentinelle/backupconfig'], check=True)
+                    shutil.move("/var/sentinelle/backupconfig/config.py" , "config.py")
+
+            else:
+                print(f"Erreur de requête : {response.status_code}")
+            
+        time.sleep(600)  
     except KeyboardInterrupt:
         print("Arrêt du programme...")
         break
