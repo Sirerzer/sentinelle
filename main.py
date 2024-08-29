@@ -61,7 +61,7 @@ while True:
             response = requests.get("https://raw.githubusercontent.com/Sirerzer/sentinelle/main/version.txt")
             if response.status_code == 200: 
                 version_text = response.text.strip()  
-                if version_text != "1":
+                if version_text != "1.1":
                     shutil.move("config.py" , "/var/sentinelle/backupconfig")
                     subprocess.run(["git", "clone", 'https://github.com/Sirerzer/sentinelle.git', '/var/sentinelle/backupconfig'], check=True)
                     shutil.move("/var/sentinelle/backupconfig/config.py" , "config.py")
