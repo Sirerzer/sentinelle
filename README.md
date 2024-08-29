@@ -7,31 +7,31 @@ Sentinelle est un outil de surveillance destiné à détecter et gérer les fich
 Le script Python `main.py` offre les fonctionnalités suivantes :
 
 1. **Détection des fichiers JAR Minecraft** :
-   - **Fonction** : `is_minecraft_server_jar(jar_path)`
+   - **Fonction** : `is_minecraft_server_jar()`
    - **Description** : Identifie les fichiers JAR associés à un serveur Minecraft en recherchant des indicateurs spécifiques dans le contenu du fichier.
 
 2. **Envoi de notifications via Discord** :
-   - **Fonction** : `send_to_discord(message, webhook_url)`
+   - **Fonction** : `send_to_discord()`
    - **Description** : Envoie des messages et/ou des fichiers à un canal Discord via un webhook pour notifier les événements importants.
 
 3. **Détection de fichiers en cours de téléchargement** :
-   - **Fonction** : `is_file_being_uploaded(file_path, wait_time=1)`
+   - **Fonction** : `is_file_being_uploaded()`
    - **Description** : Détecte si un fichier est en cours de téléchargement en comparant sa taille à différents moments.
 
 4. **Déplacement des fichiers volumineux** :
-   - **Fonction** : `move_large_file(file_path, destination_folder)`
+   - **Fonction** : `move_large_file()`
    - **Description** : Déplace un fichier vers un répertoire spécifique si sa taille dépasse un seuil défini.
 
 5. **Récupération de l'ID du serveur depuis UUID** :
-   - **Fonction** : `get_server_id_from_uuid(uuid, api_url, api_key)`
+   - **Fonction** : `get_server_id_from_uuid()`
    - **Description** : Obtient l'ID d'un serveur à partir de son UUID via une requête API.
 
 6. **Suspension d'un serveur via API** :
-   - **Fonction** : `suspend_pterodactyl_server(server_id, api_url, api_key)`
+   - **Fonction** : `suspend_pterodactyl_server()`
    - **Description** : Suspend un serveur en utilisant son ID via une requête API.
 
 7. **Recherche et nettoyage des fichiers JAR** :
-   - **Fonction** : `search_and_clean_jars(base_path, webhook_url, api_url, api_key)`
+   - **Fonction** : `search_and_clean_jars()`
    - **Description** : Explore les fichiers JAR dans un répertoire spécifié, nettoie les fichiers non-Minecraft, et prend des mesures selon leur taille et contenu.
 
 8. **Surveillance des ressources système** :
@@ -46,7 +46,7 @@ Le script Python `main.py` offre les fonctionnalités suivantes :
      - **Description** : Termine le processus avec l'ID spécifié pour libérer des ressources système.
 
 9. **Surveillance de la bande passante** :
-   - **Fonction** : `monitor_bandwidth(interface="eth0", threshold=100000000)`
+   - **Fonction** : `monitor_bandwidth()`
    - **Description** : Surveille l'utilisation de la bande passante. Si elle dépasse le seuil, tous les ports sont fermés temporairement avant d'être réouverts.
 
 10. **Gestion des ports** :
@@ -54,7 +54,7 @@ Le script Python `main.py` offre les fonctionnalités suivantes :
     - **Description** : Ferme tous les ports pour se protéger contre les attaques, puis les rouvre après une période de sécurité.
 
 11. **Surveillance des échecs de connexion SSH** :
-    - **Fonction** : `monitor_ssh_failures(log_path="/var/log/auth.log")`
+    - **Fonction** : `monitor_ssh_failures()`
     - **Description** : Analyse les échecs de connexion SSH et bannit les IPs suspectes après un certain nombre d'échecs.
 
 ## Prérequis
