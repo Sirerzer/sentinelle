@@ -56,6 +56,7 @@ Le script Python `main.py` offre les fonctionnalités suivantes :
 11. **Surveillance des échecs de connexion SSH** :
     - **Fonction** : `monitor_ssh_failures()`
     - **Description** : Analyse les échecs de connexion SSH et bannit les IPs suspectes après un certain nombre d'échecs.
+12. **Surveillance des ressources docker** 
 
 ## Prérequis
 
