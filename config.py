@@ -47,6 +47,8 @@ docker_ram_ratio = '1/3'
 # Seuil d'arrêt pour Docker : Ratio de consommation de CPU (1/3 signifie 33% du CPU total)
 docker_cpu_ratio = '1/3'
 
+# Seuil d'arrêt pour Docker : Consommation réseau en Mbits
+docker_network_threshold_mbits = 5
 # ============================
 # PARAMÈTRES MINECRAFT
 # ============================

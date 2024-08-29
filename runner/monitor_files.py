@@ -1,4 +1,4 @@
-from minecraft.fakemcserveur import search_and_clean_jars
+from server.fakemcserveur import search_and_clean_jars
 
 
 def monitor_files():

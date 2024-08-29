@@ -28,6 +28,7 @@ def start_threads(mode):
             network_thread.start()
             files_thread.start()
             ssh_thread.start()
+            time.sleep(15)
 
     elif mode == 'custom':
         try:
@@ -38,6 +39,7 @@ def start_threads(mode):
                 network_thread.start()
                 files_thread.start()
                 ssh_thread.start()
+                time.sleep(15)
         except ValueError:
             print("La configuration des modes personnalisés n'est pas valide.")
 
