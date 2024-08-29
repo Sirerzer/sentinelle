@@ -79,7 +79,7 @@ while True:
                 response.raise_for_status()
 
                 version_text = response.text.strip()
-                if version_text != "1":
+                if version_text != "1.1":
                     try:
                         move_config_file("config.py", "/var/sentinelle/backupconfig/config.py")
 
