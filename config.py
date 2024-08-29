@@ -95,6 +95,9 @@ max_ssh_attempts = 5
 # Durée (en minutes) pour bannir une adresse IP après avoir dépassé le nombre maximal de tentatives échouées
 ssh_ban_duration = 60  # en minutes
 
+# Ip ban par defaut vide True = Ban False = True banned
+banned_ips = {'192.168.41.5':True,'192.168.4.5':True}
+
 # ========================
 # PARAMÈTRES DE NOTIFICATIONS
 # ========================
