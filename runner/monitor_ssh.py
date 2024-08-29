@@ -1,4 +1,4 @@
-from monitoring.network.ssh.main import monitor_ssh_failures 
+from monitoring.ssh.main import monitor_ssh_failures 
 
 
 def monitor_ssh():

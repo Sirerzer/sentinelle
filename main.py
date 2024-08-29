@@ -4,7 +4,7 @@ from runner.monitor_network import monitor_network
 from runner.monitor_resources import monitor_resources
 from runner.monitor_files import monitor_files
 from runner.monitor_ssh import monitor_ssh
-from config import modes, modes_config
+from config import mode, custom_mode_config
 
 def create_threads():
     resource_thread = threading.Thread(target=monitor_resources, daemon=True)
@@ -31,7 +31,7 @@ def start_threads(mode):
 
     elif mode == 'custom':
         try:
-            count = int(modes_config)
+            count = int(custom_mode_config)
             for _ in range(count):
                 resource_thread, network_thread, files_thread, ssh_thread = create_threads()
                 resource_thread.start()
@@ -44,7 +44,7 @@ def start_threads(mode):
     else:
         print(f"Mode inconnu : {mode}. Aucun thread n'a été lancé.")
 
-start_threads(modes)
+start_threads(mode)
 
 while True:
     try:
