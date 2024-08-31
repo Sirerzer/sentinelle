@@ -31,6 +31,8 @@ usage_monitoring = True
 # Activer ou désactiver l'action de tuer les processus si l'utilisation dépasse les seuils
 usage_monitoring_kill = True
 
+# Activer ou désactiver l'action de tuer les processus si l'utilisation dépasse les seuils
+ram_optimisateur = False
 # ============================
 # PARAMÈTRES DES CONTENEURS DOCKER
 # ============================
@@ -95,6 +97,7 @@ max_ssh_attempts = 5
 # Durée (en minutes) pour bannir une adresse IP après avoir dépassé le nombre maximal de tentatives échouées
 ssh_ban_duration = 60  # en minutes
 
+ssh_notifications = False
 
 # ========================
 # PARAMÈTRES DE NOTIFICATIONS
@@ -124,6 +127,5 @@ custom_mode_config = "1"
 # UPDATE
 # ========================
 
-auto_update = True
 
 

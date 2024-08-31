@@ -1,7 +1,7 @@
 from config import RAM_THRESHOLD , CPU_THRESHOLD
 import psutil
 from monitoring.usage import kill_process , get_top_process 
-
+import time
 
 def monitor_resources():
     while True:
@@ -13,5 +13,7 @@ def monitor_resources():
                 top_proc = get_top_process()
                 if top_proc:
                     kill_process(top_proc)
+            time.sleep(15)
+
         except Exception as e:
             print(f"Erreur dans la surveillance des ressources : {e}")

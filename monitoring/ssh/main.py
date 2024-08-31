@@ -1,5 +1,5 @@
 from notifs.discord.discord import send_to_discord
-from config import ssh_ban_duration, max_ssh_attempts, ssh_monitoring
+from config import ssh_ban_duration, max_ssh_attempts, ssh_monitoring , ssh_notifications
 import subprocess
 import re
 import threading
@@ -77,8 +77,8 @@ def ban_ip(ip):
     except subprocess.CalledProcessError as e:
         send_to_discord(f"Error banning IP {ip}: {e}")
         return
-
-    send_to_discord(f"IP ||{ip}|| banned for {ssh_ban_duration} minutes due to SSH brute force attempts.")
+    if ssh_notifications:
+        send_to_discord(f"IP ||{ip}|| banned for {ssh_ban_duration} minutes due to SSH brute force attempts.")
 
     unban_thread = threading.Thread(target=unban_ip, args=(ip,), daemon=True)
     unban_thread.start()
@@ -112,7 +112,9 @@ def unban_ip(ip):
                     ["/usr/sbin/iptables", "-D", "INPUT", line_number],
                     check=True
                 )
-                send_to_discord(f"IP ||{ip}|| has been unbanned after {ssh_ban_duration} minutes.")
+                if ssh_notifications:
+
+                    send_to_discord(f"IP ||{ip}|| has been unbanned after {ssh_ban_duration} minutes.")
                 return
         
         send_to_discord(f"Error: IP ||{ip}|| was not found in the current iptables rules for unbanning.")

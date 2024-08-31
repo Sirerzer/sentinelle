@@ -2,7 +2,7 @@ from monitoring.docker.usage import check_and_stop_containers
 
 
 
-def monitor_files():
+def monitor_docker():
     while True:
         try:
             check_and_stop_containers()
