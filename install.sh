@@ -28,7 +28,7 @@ fi
 
 # Installer les dépendances (en supposant qu'il y a un fichier requirements.txt)
 echo "Installation des dépendances Python..."
-pip3 install -r "$INSTALL_DIR/requirements.txt" --user
+pip3 install docker psutil requests discord-webhook --break-system-packages
 
 # Créer le fichier de service systemd
 echo "Création du fichier de service systemd..."
@@ -48,6 +48,10 @@ Environment="PATH=/usr/bin"
 WantedBy=multi-user.target
 EOF
 
+
+cat <<EOF | tee "/bin/sentinelle"
+python3 /etc/sentinelle/config.py
+EOF
 # Recharger la configuration de systemd et démarrer le service
 echo "Installation du service systemd..."
 systemctl daemon-reload

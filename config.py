@@ -25,7 +25,7 @@ bandwidth_threshold = 1_000_000_000  # 1 Gbit/s
 network_interface = "eth0"
 
 # Fermeture automatique des ports si le seuil de bande passante est dépassé
-close_port_on_threshold_exceed = True
+close_port_on_threshold_exceed = False
 
 # Surveillance de l'utilisation des ressources sur le serveur
 usage_monitoring = True
@@ -111,7 +111,7 @@ discord_webhook_url = ""  # URL du webhook Discord
 # ========================
 
 # Activer ou désactiver les notifications par SMTP
-smtp_notifications = True
+smtp_notifications = False
 
 # Configuration du serveur SMTP
 smtp_server = "smtp.example.com"
