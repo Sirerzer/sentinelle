@@ -45,6 +45,13 @@ Le script configure un service `systemd` nommé `sentinelle` pour démarrer auto
 sudo systemctl status sentinelle.service
 ```
 
+###  Étape 3 : Vérifier la configuration
+Si rien n'est retourné tout fonction
+
+```bash
+sudo sentinelle
+```
+
 ## Utilisation et Surveillance
 
 - Sentinelle surveille automatiquement les fichiers et exécute les actions définies dans le script.
