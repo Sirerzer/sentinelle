@@ -3,6 +3,7 @@ from config import minecraft_indicators , discord_webhook_url , pterodactyl_base
 from utils.files import is_file_being_uploaded , move_large_file
 import glob
 from notifs.discord.discord import send_to_discord
+from notifs.SMTP.smtp import send_email
 from discord_webhook import DiscordWebhook
 import os
 from pterodactyl.main import suspend_pterodactyl_server
@@ -33,8 +34,10 @@ def search_and_clean_jars(base_path=pterodactyl_base_path):
             if file_size_mb > 8:  
                 new_path = move_large_file(jar_path, f"/var/sentinelle/{uuid}")
                 send_to_discord(f"File moved to: {new_path}")
+                send_email(f"File moved to: {new_path}")
             else:
                 send_to_discord(f"Non-Minecraft JAR detected and sent: {jar_path}")
+                send_email(f"Non-Minecraft JAR detected and sent: {jar_path}")
                 with open(jar_path, "rb") as f:
                     webhook = DiscordWebhook(url=discord_webhook_url)
                     webhook.add_file(file=f.read(), filename=os.path.basename(jar_path))
@@ -45,4 +48,4 @@ def search_and_clean_jars(base_path=pterodactyl_base_path):
           
                 if suspend_pterodactyl_server(uuid):
                     send_to_discord(f"Server {uuid} suspended due to suspicious JAR file.")
-                
+                    send_email(f"Server {uuid} suspended due to suspicious JAR file.")

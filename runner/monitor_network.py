@@ -10,3 +10,4 @@ def monitor_network():
                 open_all_ports()
         except Exception as e:
             print(f"Erreur dans la surveillance du réseau : {e}")
+        time.sleep(100)

@@ -8,3 +8,4 @@ def monitor_docker():
             check_and_stop_containers()
         except Exception as e:
             print(f"Erreur lors de la vérification et de l'arrêt des conteneurs : {e}")
+    

@@ -4,7 +4,7 @@ import subprocess
 from config import (bandwidth_threshold, threshold_monitoring, 
                     close_port_on_threshold_exceed, network_interface)
 from notifs.discord.discord import send_to_discord
-
+from notifs.SMTP.smtp import send_email
 def monitor_bandwidth(interface=network_interface, threshold=bandwidth_threshold):
     if threshold_monitoring:
         try:
@@ -34,6 +34,8 @@ def close_all_ports():
         try:
             subprocess.run(["iptables", "-F"], check=True)
             send_to_discord("Tous les ports ont été fermés (self défense)")
+            send_email("Tous les ports ont été fermés (self défense)")
+
         except subprocess.CalledProcessError as e:
             print(f"Erreur lors de la fermeture des ports: {e}")
 
@@ -41,6 +43,7 @@ def open_all_ports():
     try:
         subprocess.run(["iptables", "-A", "INPUT", "-j", "ACCEPT"], check=True)
         print("Tous les ports ont été ouverts.")
+        send_email("Tous les ports ont été ouverts. (self défense)")
         send_to_discord("Tous les ports ont été ouverts. (self défense)")
     except subprocess.CalledProcessError as e:
         print(f"Erreur lors de l'ouverture des ports: {e}")

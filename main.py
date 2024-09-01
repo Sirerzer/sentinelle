@@ -1,9 +1,5 @@
-import os
-import shutil
-import subprocess
 import threading
 import time
-import requests
 from runner.monitor_network import monitor_network
 from runner.monitor_resources import monitor_resources
 from runner.monitor_files import monitor_files
@@ -51,7 +47,7 @@ start_threads(mode)
 
 while True:
     try:
-        time.sleep(600)  
+        time.sleep(60000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000)  
     except KeyboardInterrupt:
         print("Arrêt du programme...")
         break
