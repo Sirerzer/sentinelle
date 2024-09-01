@@ -58,16 +58,6 @@ Le script Python `main.py` offre les fonctionnalités suivantes :
     - **Description** : Analyse les échecs de connexion SSH et bannit les IPs suspectes après un certain nombre d'échecs.
 12. **Surveillance des ressources docker** 
 
-## Prérequis
-
-- **Système d'exploitation** : Linux avec `systemd` installé.
-- **Python 3** : Assurez-vous que Python 3 est installé (`/usr/bin/python3`).
-- **Dépendances Python** : `psutil`, `requests`, `discord-webhook`. Installez-les via :
-
-    ```bash
-      pip install psutil requests discord-webhook --break-system-packages  
-    ```
-
 ## Installation
 
 Suivez ces étapes pour installer Sentinelle sur votre serveur :
