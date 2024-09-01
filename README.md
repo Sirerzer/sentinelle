@@ -125,4 +125,6 @@ sudo rm -rf /etc/sentinelle
 
 Les contributions sont les bienvenues ! Pour signaler des bugs ou proposer de nouvelles fonctionnalités, ouvrez une issue sur [GitHub](https://github.com/Sirerzer/sentinelle/issues).
 
+## Term pour la rechercher
 
+anti fake jar pterodactyl
