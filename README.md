@@ -2,6 +2,8 @@
 
 **Sentinelle** est un outil de surveillance conçu pour détecter et gérer les fichiers suspects sur les serveurs. Il exécute des actions automatiques pour protéger le système, comme la suspension de serveurs, le déplacement de fichiers douteux et l'envoi de notifications via un webhook Discord.
 
+[![Python package](https://github.com/Sirerzer/sentinelle/actions/workflows/python-app.yml/badge.svg)](https://github.com/Sirerzer/sentinelle/actions/workflows/python-app.yml)
+
 ## Fonctionnalités
 
 Sentinelle propose les fonctionnalités suivantes :
